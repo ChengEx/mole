@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>whack-a-mole</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(./images/bg-dirt.png);
+        }
+
+        #game {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+
+        }
+
+        #playground {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 1px;
+            height: 1px;
+            margin: auto;
+
+        }
+
+        #playground table {
+            margin-top: -300px;
+            margin-left: -400px;
+        }
+
+        #playground .mole {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            background-image: url(./images/grass-upper.png);
+            background-repeat: no-repeat;
+            background-size: 100px 50px;
+            background-position: top 0;
+            position: relative;
+
+        }
+
+        #playground .mole::before {
+            content: " ";
+            width: 60px;
+            height: 60px;
+            background-image: url(./images/mole-laugh1.png);
+            background-repeat: no-repeat;
+            background-size: 60px 60px;
+            background-position: top 0;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            transition: all 1s;
+        }
+
+        #playground .mole.active::before {
+            background-image: url(./images/mole.png);
+            top: 10px;
+            transition: all .3s;
+        }
+
+        #playground .mole.hit::before {
+            background-image: url(./images/mole-thump4.png);
+            top: 40px;
+            transition: all .5s;
+        }
+
+        #playground .mole::after {
+            content: " ";
+            width: 100px;
+            height: 50px;
+            background-image: url(./images/grass-lower.png);
+            background-repeat: no-repeat;
+            background-size: 100px 50px;
+            background-position: top 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        #score {
+
+            position: fixed;
+            min-width: 250px;
+            right: 50px;
+            top: 50px;
+            background: rgba(50, 50, 50, .5);
+            padding: 20px;
+        }
+
+        #timeee {
+            font-size: 50px;
+            color: white;
+        }
+
+        #gametime {
+            font-size: 50px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game">
+        <div id="playground">
+            <table>
+
+                <tr class="t1">
+                    <!-- <td>
+                        <div class="mole" id="m0"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m1"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m2"></div>
+                    </td> -->
+                </tr>
+                <tr class="t2">
+                    <!-- <td>
+                        <div class="mole" id="m3"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m4"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m5"></div>
+                    </td> -->
+                </tr>
+                <tr class="t3">
+                    <!-- <td>
+                        <div class="mole" id="m6"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m7"></div>
+                    </td>
+                    <td>
+                        <div class="mole" id="m8"></div>
+                    </td> -->
+                </tr>
+                <tr class="t4"></tr>
+                <tr class="t5"></tr>
+                <tr class="t6"></tr>
+                <tr class="t7"></tr>
+            </table>
+        </div>
+        <div id="score">
+            <h2 class="text-danger">Scoreboard</h2>
+            <h3>
+                <span class="text-info">Your score: <span>
+                        <span id="current-score" class="scores">0</span>
+            </h3>
+            <h3>
+                <span class="text-info">Level: <span>
+                        <span id="current-level" class="scores">1</span>
+            </h3>
+            <!-- <h3>
+                <span class="text-info">Life: <span>
+
+            </h3>
+            <div class="progress">
+                <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                    aria-valuemax="100" style="width: 100%;">
+                    100
+                </div>
+            </div> -->
+            <hr>
+            <p>
+                <select id="sizing" class="form-control">
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+
+                </select>
+            </p>
+            <p>
+                <button id="start" class="btn btn-default">Start</button>
+                <button id="stop" class="btn btn-default">Stop</button>
+            </p>
+            <h1 id="timeee"></h1>
+            <h1 id="gametime"></h1>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+            alert("請先選擇你要幾乘幾的格數,嘗試挑戰到Level 5");
+
+            //Math.sqrt(x)
+            var x = 25;  // 4
+            var ttt = 0;
+            var maxNum = 0;
+            var minNum = 0;
+            var txt = 0;
+            var test = 0;
+            var score = 0;
+
+            var level = 1;
+
+            var timecount = 5;   //倒數
+            var gamecount = 10;  //遊戲時間
+            console.info(Math.sqrt(x));
+            $("#start").attr('disabled', 'disabled');
+            $("#stop").attr('disabled', 'disabled');
+
+
+
+
+
+            $("#sizing").change(function () {
+                score = 0;
+                $("#current-score").html(score);
+                $("#start").removeAttr('disabled');
+                $("#stop").removeAttr('disabled');
+
+                restart();
+
+                txt = $("#sizing").val();
+
+
+                if (txt == 3) {
+                    $("#playground table").css("margin-top", "-200px").css("margin-left", "-250px");
+                } else if (txt == 4) {
+                    $("#playground table").css("margin-top", "-200px").css("margin-left", "-300px");
+                } else if (txt == 5) {
+                    $("#playground table").css("margin-top", "-250px").css("margin-left", "-350px");
+                } else if (txt == 6) {
+                    $("#playground table").css("margin-top", "-300px").css("margin-left", "-400px");
+                }
+
+                maxNum = txt * txt;
+                minNum = 0;
+                console.info(txt);
+
+                for (var i = 0; i < txt * txt; i++) {
+                    if (i % Math.sqrt(txt * txt) == 0) {
+                        ttt += 1;
+                        $("#playground table .t" + ttt).append("<td><div class='mole' id='m" + i + "'></div></td>");
+                    } else {
+                        $("#playground table .t" + ttt).append("<td><div class='mole' id='m" + i + "'></div></td>");
+                    }
+
+                }
+            })
+            $("#start").click(function () {
+                var fk;
+                $("#start").attr('disabled', 'disabled');
+                $("#sizing").attr('disabled', 'disabled');
+                clearInterval(fk);
+                backtime();
+
+                function backtime() {
+                    var timeee = setInterval(function () {
+                        if (timecount == -1) {
+                            timecount = 5;
+                            play();
+                            $("#timeee").html("");
+                            gametime();
+                            clearInterval(timeee);
+
+                        } else {
+                            $("#timeee").html(timecount.toString());
+                            timecount--;
+                        }
+                    }, 1000)
+                }
+                function gametime() {
+                    var gametime = setInterval(function () {
+                        if (gamecount == -1) {
+                            //play();
+                            level += 1;
+                            gamecount = 10;
+                            $("#gametime").html("");
+                            $("#current-level").html(level);
+                            clearInterval(fk);
+                            clearInterval(gametime);
+                            setTimeout(function () {
+                                if (level == 6) {
+
+                                    if (score >= 7000) {
+                                        alert("唉唷 不錯唷~  你的成績為" + score);
+                                    } else if (score < 7000 && score >= 5000) {
+                                        alert("痾 還算能看~  你的成績為" + score);
+                                    } else if (score < 5000 && score >= 0) {
+                                        alert("摳連喔~  你的成績為" + score);
+                                    }
+
+                                    level = 0;
+                                    $("#current-level").html(level);
+                                    score = 0;
+                                    $("#current-score").html(score);
+                                    $("#start").removeAttr('disabled');
+                                    $("#sizing").removeAttr('disabled');
+                                } else {
+                                    backtime();
+                                }
+
+
+                            }, 2000)
+
+                        } else {
+                            $("#gametime").html(gamecount.toString());
+                            gamecount--;
+                        }
+                    }, 1000)
+                }
+
+
+                console.info(ttt);
+                function play() {
+                    fk = setInterval(function () {
+                        var n = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+                        $("#m" + n).addClass("active");
+                        $("#m" + n).on("click", function () {
+                            test = $("#m" + n);
+
+                            if (test.hasClass("active")) {
+
+                                //console.info("hit");
+                                $(this).addClass("hit");
+                                $(this).removeClass("active");
+
+                                score += 100;
+                                console.info(score);
+                                $("#current-score").html(score);
+
+                            }
+
+
+                        })
+                        $("#m" + n).removeClass("hit");
+                        var x = setTimeout(function () {
+                            $("#m" + n).removeClass("active");
+                        }, 1500 - (level * 200))
+                    }, 1000 - (level * 150))
+                }
+
+
+
+                $("#stop").click(function () {
+                    count = 5;
+                    $("#sizing").removeAttr('disabled');
+                    $("#start").removeAttr('disabled');
+                    clearInterval(fk);
+
+                })
+                // $("#playground table").click(function () {
+                //     console.info(test);
+                //     if(test.hasClass("active")) {
+                //         console.info("hit");
+                //     }
+                // })
+
+            });
+
+
+            function restart() {
+
+                for (var i = 1; i <= ttt; i++) {
+                    $(".t" + i).children("td").remove();
+                }
+                ttt = 0;
+
+            }
+
+
+
+
+        })
+    </script>
+</body>
+
+</html>
