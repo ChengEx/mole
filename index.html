@@ -186,7 +186,7 @@
             </p>
             <p>
                 <button id="start" class="btn btn-default">Start</button>
-                <button id="stop" class="btn btn-default">Stop</button>
+                <!-- <button id="stop" class="btn btn-default">Stop</button> -->
             </p>
             <h1 id="timeee"></h1>
             <h1 id="gametime"></h1>
@@ -214,7 +214,7 @@
             var gamecount = 10;  //遊戲時間
             console.info(Math.sqrt(x));
             $("#start").attr('disabled', 'disabled');
-            $("#stop").attr('disabled', 'disabled');
+            //$("#stop").attr('disabled', 'disabled');
 
 
 
@@ -224,7 +224,7 @@
                 score = 0;
                 $("#current-score").html(score);
                 $("#start").removeAttr('disabled');
-                $("#stop").removeAttr('disabled');
+                //$("#stop").removeAttr('disabled');
 
                 restart();
 
@@ -350,19 +350,14 @@
 
 
 
-                $("#stop").click(function () {
-                    count = 5;
-                    $("#sizing").removeAttr('disabled');
-                    $("#start").removeAttr('disabled');
-                    clearInterval(fk);
+                // $("#stop").click(function () {
+                //     count = 5;
+                //     $("#sizing").removeAttr('disabled');
+                //     $("#start").removeAttr('disabled');
+                //     clearInterval(fk);
 
-                })
-                // $("#playground table").click(function () {
-                //     console.info(test);
-                //     if(test.hasClass("active")) {
-                //         console.info("hit");
-                //     }
                 // })
+               
 
             });
 
